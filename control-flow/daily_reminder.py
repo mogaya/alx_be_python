@@ -11,18 +11,18 @@ time_bound = input("Is it time-bound? (yes/no): ")
 match priority:
     case 'high':
         if time_bound == 'yes':
-            print(f"{task} is a {priority} priority task that requires immediate attention today!")
+            print(f"Reminder: '{task}' is a {priority} priority task that requires immediate attention today!")
         else:
-            print(f"{task} is a {priority} priority task that does not require immediate attention today!")
+            print(f"Reminder: '{task}' is a {priority} priority task that does not require immediate attention today!")
 
     case 'medium':
         if time_bound == 'yes':
-            print(f"{task} is a {priority} priority task that requires immediate attention today!")
+            print(f"Reminder: '{task}' is a {priority} priority task that requires immediate attention today!")
         else:
-            print(f"{task} is a {priority} priority task that does not require immediate attention today!")
+            print(f"Reminder: '{task}' is a {priority} priority task that does not require immediate attention today!")
 
     case 'low':
         if time_bound == 'yes':
-            print(f"{task} is a {priority} priority task that requires immediate attention today!")
+            print(f"Reminder: '{task}' is a {priority} priority task that requires immediate attention today!")
         else:
-            print(f"{task} is a {priority} priority task that does not require immediate attention today!")
+            print(f"Reminder: '{task}' is a {priority} priority task that does not require immediate attention today!")
