@@ -1,0 +1,350 @@
+
+***Constructors (__init__)***
+- A special method that automatically gets called when you create an 
+object of a class.
+- Responsible for initializing the object's attributes(variables) with 
+starting values.
+
+class Point:
+	def __init__(self, x, y)
+		self.x = x
+		self.y = y
+# Point Object
+point = Point(3,5)
+print(f"Point coordinates: ({point.x}, {point.y})"
+
+- __init__ method takes parameters along with self. self represents the 
+instance of the class(the object itself) and is used to access variables 
+and methods within the class
+- __init__ initialises the object with initial values for its attributes 
+(x and y in this case)
+- we set attributes self.x and self.y with the values passed during 
+object creation (Point(3,5))
+- We create an object named point of Point class by calling Point(3, 5). 
+This invokes the __init__ method with x = 3 and y = 5
+- The point object now has attributes x and y initialized to 3 and 5
+- We use dot notation (point.x and point.y) to access the attributes of 
+the point object
+
+***Destructors (__del__)***
+- When you create an object in py, it occupies memory to store its data 
+and code. Objects are automatically destroyed(garbage collected) when 
+they are no longer in use or when the program exits.
+
+- __del__ method is a special method in py classes that gets called when 
+an object is about to be detroyed(garbage collected). It can also be 
+defined in a class to perform cleanup tasks or release resources held by 
+the object before it is destroyed.
+
+consider an example where a file is closed automatically when the object 
+representing that file is no longer needed
+
+class FileHandler:
+	def __init__(self, filename):
+		self.filename = filename
+		self,file = open(filename, 'r') #open file for reading
+
+	def read_data(self):
+		return self.file.read()
+
+	def __del__(self):
+		self.file.close() #close file when object is destroyed
+
+#Object of FileHandler
+file_obj = FileHandler('sample.txt')
+print(file_obj.read_data())
+
+***Magic Methods***
+- These are special methods in python that start and end with double 
+underscores (also known as dunder methods)
+- They allow defining specific behaviours for objects in various 
+contexts such as: arithmetic operations, comparisons, string 
+representations, etc
+- Common examples: 
+	__str__: Defines how an object is represented as a string
+	__repr__: Defines the official string representation of an 
+		object
+
+class Person:
+	def __init__(self, name, age):
+		self.name = name
+		self.age = age
+
+	def __str__(self):
+		return f"Name: {self.name}, Age: {self.age}"
+
+person = Person("Alice", 30)
+print(person) #output: Name: Alice, Age:30
+
+CLASS INHERITANCE AND COMPOSITION
+***Inheritance***
+-Allows you to create new classes (subclasses) that inherit properties 
+and behaviours from existing classes (parent classes)
+- Promotes code reusability and facilitates the creation of class 
+hierarchies
+
+class Animal:
+	def __init__(self, name):
+		self.name = name
+
+	def make_sound(self):
+		print("Generic animal sound")
+
+class Dog(Animal):
+	def __init__(self, name, breed):
+		super().__init__(name) #call parent class constructor
+		self.breed = breed
+
+	def make_sound(self):
+		print("Woof!")
+
+dog = Dog("Buddy", "Labrador")
+dog.make_sound() #Output: Woof!
+***Composition as an Alternative***
+- A technique for code reuse that involves creating objects of one class 
+whithin another class. It allows you to combine functionalities from 
+different classes without directly inheriting from them:
+
+class Car:
+	def __init__(self, engine):
+		self.engine = engine
+
+	def start(self)
+		self.engine.start()
+
+class Engine:
+	def start(self):
+		print("Engine Starting...")
+
+car = Car(Engine())
+car.start()
+
+
+INHERITANCE AND POLYMORHISM
+- Inheritance allows creating new classes(child classes) that inherit 
+properties and behaviours from existing classes (parent classes)
+- Polymorphism enables objects of diff classes to respond to the same 
+method call in diff ways
+
+- Single inheritance - A child class inherits from a single parent class
+
+class Animal:
+	def  __init__(self, name):
+		self.name = name
+
+	def make_sound(self):
+		print("Generic animal sound")
+
+class Dog(Animal):
+	def make_sound(self):
+		print("Woof!")
+
+laissie = Dog("Laissie")
+laissie.make_sound() #Output: Woof!
+
+- Multiple Inheritance - A child class inherits from multiple parent 
+classes. Diamond problem (method ambiguity) can arise if parent classes 
+have the same method.
+
+class Flyer:
+	def fly(self):
+		print("Flying...")
+
+class Swimmer:
+	def swim(self):
+		print("Swimming...")
+
+class Duck(Flyer, Swimmer):
+	pass
+
+duck = Duck()
+duck.fly() #Output: Flying...
+duck.swim() #Output: Swimming...
+
+- Multilevel Inheritance - A child class inherits from a parent class, 
+which itself inherits from another parent class
+
+class Vehicle:
+	def move(self):
+		print("Moving...")
+
+class Car(Vehicle):
+	pass
+
+class ElectricCar(Car):
+	def charge(self):
+		print("Charging...")
+
+tesla = ElectricCar()
+tesla.move() #Output: Moving...
+tesla.charge() #Output: Charging...
+
+***Method Resolution Order (MRO)***
+- MRO is the order in which python searches for methods in classes 
+during method calls, especially in cases of multiple inheritance. It 
+helps Python determine which method to execute when there are method 
+conflicts or ambiguity due to inheritance.
+
+---How does Python determine MRO---
+- Using C3 linearization algorithm. It follows a depth-first left to 
+right search pattern to maintain the order of inheritance
+
+class A:
+	def greet(self):
+		return "Hello from class A"
+
+class B(A):
+	def greet(self):
+		return "Hello from class B"
+
+class C(A):
+	def greeet(self):
+		return "Hello from class C"
+
+class D(B, C):
+	pass
+
+#Creating an instance of class D
+obj_d = D()
+print(obj_d.greet()) #Output: "Hello from class B"
+
+Break Down
+* D inherits from B and C, which in turn inherit from A
+* When we call obj_d.greet(), Python follows MRO to determine which 
+greet() method to execute.
+* MRO for D is D->B->C->A, following the depth-first left-to-right search.
+* py finds the greet() method in class B first(left-most class in inheritance)
+so it executes greet() method from class B
+
+***Polymorphism***
+- Allows objects to take on different forms or behaviors based on their 
+specific class or context. i.e. different objects can respond to the 
+same method or function call in different ways.
+- A child class redefines a method inherited from a parent class with 
+its own implementation
+
+---Implementing Polymorphism and Method Overriding---
+- Polymorphism is achieved through method overriding, where a subclass 
+provides a specific implementation of a method that it inherits from its 
+superclass
+
+class Animal:
+	def make_sound(self):
+		print("Generic animal sound")
+
+class Dog(Animal):
+	def make_sound(self):
+		print("Woof!")
+
+animals = [Dog(), Animal()]
+for animal in animals:
+	animal.make_sound() #Output: Woof! (for Dog), Generic animal 
+			     sound (for Animal)
+
+---Polymorphic Behaviour with Duck Typing---
+- Duck typing emphasizes the object's behavior over its type or class.
+It is based on the idea that "If it looks like a duck and quacks like 
+a duck, then it must be a duck.
+
+class Duck:
+	def quack(self):
+		return "Duck quacks"
+
+class Person:
+	def quack(self):
+		return "Person imitates duck"
+
+# Polymorphic behavior using duck typing
+def make_sound(obj):
+	return obj.quack()
+
+duck_obj = Duck()
+person_obj = Person()
+
+print(make_sound(duck_obj)) #Output: "Duck quacks"
+print(make_sound(person_obj)) #Output: "Person imitates duck"
+
+CLASS METHODS AND STATIC METHODS
+@classmethod
+@staticmethod
+
+***Class Methods***
+- These are methods that are bound to the class itself rather than 
+instances of the class(objects)
+- Are used to define methods that operate on class-level data or perform
+ operations related to the class.
+- Are defined using @classmethod decorator, the first parameter 
+conventionally named 'cls' represents the class itself
+
+---When to use class methods---
+- When you need to access or modify class-specific variables or 
+properties
+- When you want to create factory methods to create instances of the 
+class with specific configurations
+
+class Person:
+	count = 0 #class variable to count instances
+
+	def __init__(self, name)
+		self.name = name
+		person.count += #Increament count on instance creation
+
+	@classmethod
+	def display_count(cls):
+		print(f"Total persons created: {cls.count}")
+
+#usage
+person1 = Person("Alice")
+person2 = Person("Bob")
+Person.display_count() #Output: Total persons created: 2
+
+Code Breakdown
+**Class Definition**
+* Define a class named person to represent individuals
+* Class variable 'count' which is initialized to 0 counts the number of 
+instances created from this class
+* __init__ method(constructor) takes a name parameter to initialize the 
+name attribute for each person object
+* Increaments the count class variable by 1 every time a new instance of
+ Person is created, using Person.count += 1 wthin the constructor
+
+**Class Method (display_count)**
+* Defines a class method display_count using the @classmethod decorator
+* Class methods take the class itself 'cls' as the first parameter 
+instead of the instance (self)
+* Prints the total number of persons created by accessing the count 
+class variable.
+
+**Creating Person Instances**
+* Creates two instances of the Person class named person1 and person2
+
+**Using the Class Method**
+* Calls the display_count class method using Person.display_count() to 
+print the total number of persons created
+
+
+***Static Methods***
+- Are independent of class instances and the class itself.
+- Behave like regular functions but are defined inside a class for 
+organization purposes.
+- Are defined using @staticmethod decorator and don't require the self 
+or cls parameter
+
+---When to Use Static Methods---
+- a method doesn't need access to class or instance variables 
+(attributes)
+- to group utility functions related to the class within the class 
+definition
+
+class MathUtils:
+	@staticmethod
+	def add(a, b):
+		return a + b
+
+	@staticmethod
+	def multiply(a, b):
+		return a + b
+
+# Usage
+print(MathUtils.add(5, 3)) #Output: 8
+print(MathUtils.multiply(5, 3) #Output: 15
