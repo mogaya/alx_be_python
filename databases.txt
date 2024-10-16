@@ -1,0 +1,132 @@
+WHAT IS A DATABASE
+
+- Database: an organized collection of data that is stored and managed in a way that allows efficient retrieval, manipulation, and maintanace of information.
+
+Advantages 
+- efficient data management
+- data integrity
+- data security
+
+examples of databases
+- Relational databases: (e.g. MySQL, PostgreSQL, Oracle) Organize data into tables with predefined schema and support SQL(Structured Query Language) for querying and manipulation.
+- NoSQL databases: (e.g. MongoDB, Cassandra) Handle unstructured or semi-structured data and provide flexible schema
+
+***Database Management System(DBMS)***
+- Software designed to create manage and interact with databases. Intermediate between the database and applications or users
+- schema. Database structured
+
+Main Uses of DBMS
+- Tasks such as: defining db structure(schema), creating and modifying tables, inserting, updating, deleting and enforcing data integrity rules.
+- Translates high level queries(e.g. SQL) into low-level operationals that interact directly with the physical storage of data on disk or in memory
+- Manages concurrent access to data
+- Popular examples: MySQL, PostgreSQL, Oracle,  MicrosoftSQL Server, and MongoDB
+
+
+TYPES OF DATABASES
+
+***SQL Databases***
+- Are based on the relational model introduced by E.F Codd in 1970
+- Store data in tables with a predefined schema and use SQL for querying and manipulation
+- Data is organized into tables with rows(records) and columns(fields). Tables can be related to each other through foreign keys and join operations
+- Enforce a strict schema, i.e the structure of the data (tables, columns, and data types) must be defined in advance and use SQL for data manipulation and retrieval
+- Well suited for applications that require complex querying, data integrity and transactions, such as financial systems, e-commerce platforms, and content management systems
+
+Characteristics
+- Structured data. Data organised into predefined structures with strict schema
+- ACID transactions. support ACID(Automicity, Consistency, Isolation, Durability) transactions to maintain data integrity
+- Data Integrity. Enforces data integrity through constrains such as primary keys, foreign keys and unique constraints
+
+examples of Databases
+- MySQL. open source relational Relational Database Management System(RDBMS) widely used in web development
+- PostgreSQL. powerful open-source object-relational databases system known for its robustness and extensibility
+- Oracle. a commercial RDBMS commonly used in enterprise applications
+
+***NoSQL Databases***
+- Handle unstructured or semi-structured data and provide flexible schemas.
+- Can be classified into the following types: key-value stores, document-oriented db, column-family stores, and graph db
+- Designed to scale horizontally by distributing data across multiple servers or clusters, making them suitable for handling large volumes of data and high-traffic applications.
+- Sacrifice some of the ACID properties in favor of higher availability, partition tolerance and eventual consistency
+
+Characteristics
+- Schema flexibility. support flexible schemas, allowing for easier adaptation to evolving data models
+- Scalability. Designed for horizontal scalability, enabling distributed storage and processing across multiple nodes
+- Variety of Data Models. Support various data models such as document, key-value, columnar and graph
+
+examples:
+- MongoDB. Stores data in flexible JSON-like documents - Humongous
+- Cassandra. distributed NoSQL db designed for scalability and high availability, commonly used in large-scale distributed systems
+- Redis. In memory data store that supports various data structures like strings, lists, sets and hashes
+- AWS DynamoDB
+
+Database: DB_name
+Collections: (Tables) table_name
+Documents: (Rows), look like JSON, do not have to use the same schema
+
+SQL:
+- Data uses schemas
+- Relations
+- Data is distributed across multiple tables
+- Horizontal scaling is difficult / impossible; Vertical scaling is possible
+- Limitations for lots of (thousands) read and write queries per second
+
+NoSQL:
+- Schema-less
+- No (or very few) Relations
+- Data is typically merged / nested in a few Collections
+- Both horizontal and vertical scaling is possible
+- Great performance for mass (simple) read and write requests
+
+INTRODUCTION TO SQL
+- Rows also records
+- Columns also fields
+- Primary key. A column or combination of columns that uniquely identifies each row on a table
+- Foreign key. Column or a combination of columns that references the primary key of another table, establishing a relationship btwn the two tables
+- Relationships ensure data integrity and eliminate redundancy
+
+- SQL is a declarative language i.e you specify what data you want to retrieve or manipulate rather than providing step by step instructions on how to do it.
+
+SQL syntax and structure
+- types of SQL statements
+1. Data Definition Language (DDL), for creating, modifying, and deleting db objects like tables and indixes(e.g. CREATE, ALTER, DROP)
+2. Data Manipulation Language (DML), for inserting, updating and deleting data within tables(e.g. INSERT, UPDATE, DELETE)
+3. Data Query Language (DQL), retrieving data from tables(e.g. SELECT)
+4. Data Control Language (DCL), managing user access and permissions(e.g. GRANT, REVOKE)
+
+SQL Data types
+- Numeric Types: store numbers. e.g. INTEGER, SMALLINT, BIGINT, DECIMAL, NUMERIC, FLOAT
+- Character Types: store text data. e.g. CHAR, VARCHAR, TEXT
+- Date and Time Types: store date and time values e.g. DATE, TIME, DATETIME, TIMESTAMP
+- Boolean Type: store logical values, True or False e.g. BOOLEAN
+data types define the kind of data that can be stored in a column and ensure data integrity by preventing invalid data from being stored
+
+Basic SQL operations
+
+- Creating a Tables:
+CREATE TABLE Employees (
+    EmployeeID INT PRIMAY KEY,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    Email VARCHAR(100) UNIQUE,
+    HireDate DATE
+);
+
+- Inserting Data into a Table:
+INSERT INTO Employees (EmployeeID, FirstName, LastName, Email, HireDate)
+VALUES (1, 'John', 'Doe', 'john@gmail.com', '2024-10-16');
+
+INSERT INTO Employees (EmployeeID, FirstName, LastName, Email, HireDate)
+VALUES (2, 'Jane', 'Smith', 'jane@gmail.com', '2024-10-17'),
+        (3, 'Michael', 'Jordan', 'jordan@gmail.com', '2024-10-18');
+
+- Selecting Data from a Table
+SELECT * FROM Employees;
+SELECT FirstName, LastName, Email FROM Employees;
+
+CRUD OPERATIONS WITH SQL
+
+DDL (Data Definition Language)
+- define and manage the structure of a db i.e. creating, modifying, and dropping database objects like tables, indexes and views
+- provides a way to create, alter, and remove db objects as well as define constraints and relationships between them
+- Common commands:
+1. CREATE TABLE - creates a new table with specific column and data types
+2. ALTER TABLE - modify an existing table i.e. adding, modifying, or dropping columns e.g ALTER TABLE Customers ADD Address VARCHAR
