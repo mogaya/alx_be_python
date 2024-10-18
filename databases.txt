@@ -143,3 +143,114 @@ CRUD(Create, Read, Update, and Delete)
 
 Create(INSERT)
 - INSERT is used to create new records(rows) in a database table
+- Basic syntax:
+INSERT INTO table_name (column1, column2, ...)
+VALUES (value1, value2, ...);
+- specify colmns for which to insert values or omit the column list to insert values for all columns in the table
+- order of the values must match the order of the columns specified, or order of the columns in the table
+- insert multiple rows at once by separating the value set with commands
+INSERT INTO table_name (column1, column2, ...)
+VALUES (value1, value2, ...),
+        (value3, value4, ...),
+        ...;
+
+
+Read(SELECT)
+- retrieves data from one or more tables in a db. Primary statement for querying and reading data
+- basic syntax:
+SELECT column1, column2, ...
+FROM table_name;
+
+- specify columns to retrieve or use * wildcard to select all columns from the table
+- can be combined with various clauses to filter, dort and manipulate the result set, such as WHERE, ORDER BY, JOIN, GROUP BY e.t.c e.g.
+SELECT FirstName, LastName, Email
+FROM Students
+WHERE EnrollmentDate > '2022-01-01'
+ORDER BY LastName ASC;
+
+Update(UPDATE)
+- modifys existing records in the db
+- basic syntax:
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+
+- SET - specifies the columns and their new values you want to Update
+- WHERE - optional but recommended to filter the rows you want to update based on specific conditions, If omitted, all rows in the table will be updated e.g
+UPDATE Students
+SET Email = 'updated@gmail.com'
+WHERE StudentID = 1;
+
+
+Delete(DELETE)
+- to remove one or more records(rows) from a db
+- basic syntax:
+DELETE FROM table_name
+WHERE condition;
+
+- WHERE clause is optional but recommended to filter the rows to delete based on specific conditions. If omitted all rows will be deleted
+e.g.
+DELETE FROM Students
+WHERE EnrollmentDate < '2021-01-01';
+
+
+ADVANCED SQL TECHNIQUES
+
+DQL (Data Query Language)
+- used to retrieve data fom db allowing querying and filtering based on specific conditions.
+- common commands:
+1. SELECT - retrieves data from one or more tables. e.g.
+SELECT * FROM Customers;
+2. WHERE - filter rows based on a specific condition. e.g.
+SELECT * FROM Customers WHERE City = 'New York';
+3. JOIN - combines rows from two or more tables based on a related column between them. e.g. 
+SELECT Customers.Name, Orders.OrderDate FROM Customers JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+
+***Sorting and Filtering Data***
+Sorting
+- Alows arranging a data set based on a specific column. Achieved using the ORDER BY clause.
+- Specifying the order: After SELECT statement include the ORDER BY clause followed by the column names(s) you want to sort by.
+- Ascending or Descending: By default, sorting is ascending(A - Z or lowest - highest). ASC can be used to explicitly define ascending order or DESC for Descending e.g.
+SELECT * FROM Products ORDER BY Price ASC;
+
+Filtering: Focusing on the Relevant
+- Allows narrowing down data set based on specific criteria. Achieved using WHERE clause
+- Breakdown:
+Defining Conditions: WHERE clause comes after FROM and lets you specify conditions that rows must meet to be included in the results. comparison operators (=, >, < e.t.c) and logical operators (AND, OR, NOT) are used to combine the conditions
+Filtering Logic: Only rows that satisfy al the conditions(when using AND) or at least one condition (when using OR) are included in the final result set.
+
+SELECT * FROM Customers WHERE City = 'New York' AND Age > 25;
+SELECT * FROM Orders WHERE OrderStatus = 'Shipped' AND OrderDate > '2023-01,01';
+
+
+***Complex Queries and Subqueries***
+- Involve use of multiple SQL clauses and operators to retrieve or manipulate data from one or more tables. Allow for more sophisticated data retrieval and analysis than simple queries.
+
+Components of Complex queries
+- Joins - combining data from multiple tables based on related columns using JOIN clauses e.g. INNER JOIN, LEFT JOIN, RIGHT JOIN
+- Aggreggation - Grouping and summarizing data using aggregate functions e.g. SUM, AVG, COUNT and GROUP BY clauses
+- Subqueries - Nesting queries within other queries to perform operations to filter data
+- Set Operations - Combining results of multiple queries using set operations e.g. UNION, INTERSECT, EXCEPT
+
+JOIN - Combining data from multiple tables
+- allows combining data from two or more tables based on a shared relationship btwn em
+- types of join:
+1. INNER JOIN - most common type. returns only rows where there's a match in both tables based on the join condition
+2. LEFT JOIN - includes alll rows from the left table (specified before the JOIN keyword) and matching rows from the right table. Rows from the right table with no match will have NULL values in the corresponding columns
+3. RIGHT JOIN - similar to LEFT JOIN, but includes all rows from the right table and matching rows from the left table. Left Table mismatches will result in NULL values
+4. FULL JOIN - returns all rows from both tables, regardless of whether there's a match in the orther table. Unmatched rows wil have NULL values in the corresponding columns
+
+Aggreggation - Involves applying  aggregate functions to groups of rows in a table to summarize data and perform calculations. Allows analysis of large datasets by condesing information into meaningful insights.
+- used to perform calculation on groups of data such as calculating sums, averages, counts, minimums, and maximums
+
+Aggregate functions:
+1. SUM - sum of values in a column
+2. AVG - average of values in a column
+3. COUNT - number of rows in a groups
+4. MIN - minimum value in a column
+5. MAX - maximum value in a column
+
+e.g.
+SELECT Department, COUNT(*) AS EmployeeCount FROM Employees GROUP BY Department;
+SELECT ProductCategory, AVG(UnitPrice) AS AvgPrice FROM Products GROUP BY ProductCategory;
+SELECT OrderDate, SUM(TotalAmount) AS TotalSales FROM Orders GROUP BY OrderDate;
