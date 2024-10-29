@@ -254,3 +254,189 @@ e.g.
 SELECT Department, COUNT(*) AS EmployeeCount FROM Employees GROUP BY Department;
 SELECT ProductCategory, AVG(UnitPrice) AS AvgPrice FROM Products GROUP BY ProductCategory;
 SELECT OrderDate, SUM(TotalAmount) AS TotalSales FROM Orders GROUP BY OrderDate;
+
+Subqueries - Also nested queries or inner queries
+- SQL queries nested within another query
+- Perform operations or filter data based on results of another query
+- Allow for complex and flexible querying by enabling dynamic filtering, calculations and data manipulations
+
+Types of Subqueries
+1. Single-row Subqueries - Return a single value or row and are used with single-row operators e.g. =, >, <
+2. Multiple-row Subqueries - Return multiple rows and are used with multiple-row operators e.g. IN, ANY, ALL
+3. Correlated Subqueries - Reference columns from the outer query within the subquery, allowing for correlational operations
+e.g.
+SELECT ProductName
+FROM Products
+WHERE UnitPrice > (SELECT AVG(UnitPrice) FROM Products);
+
+DCL (Data Control Language)
+- Used to manage user access and permissions within a database. Ensure data security and controlling who can access and modify data.
+- common commmands
+1. GRANT - grant specific priviledges or roles to users or other roles. e.g. GRANT SELECT, INSERT ON Customers TO UserRole;
+2. REVOKE - revoke or remove previously granted priviledges or roles from users or other roles. e.g. REVOKE SELECT ON Customers FROM UserRole;
+
+CREATE ROLE StudentAdmin;
+GRANT SELECT, INSERT, UPDATE, DELETE ON Students TO StudentAdmin;
+CREATE USER 'admin_user' IDENTIFIED BY 'password123';
+GRANT StudentAdmin TO 'admin_user';
+
+SQL TUTORIALS - 
+https://intranet.alxswe.com/rltoken/AqQGabzAQYxNLLbvOUwHMQ
+
+Aggregate functions -
+https://intranet.alxswe.com/rltoken/xRtcrspdmJjN3fS1AjoJ1Q
+
+Subqueries - 
+https://intranet.alxswe.com/rltoken/5nBT_wro-nn585vC_uN9BA
+
+
+
+INTEGRATING PYTHON WITH MYSQL DATABASES
+`mysql-connector-python` library
+- Popular library that bridges the gab between Python and MySQL db
+- Provides  a comprehensive interface for interacting with MySQL servers, allowing you to execute queries, manipulate data and manage db objects.
+
+- download command `pip install mysql-connector-python`
+
+Connection Statement Example
+
+import mysql.connector
+
+mydb = mysql.connector.connect(
+        host = "localhost",
+        user = "username",
+        password = "password",
+        database = "database"
+)
+
+print(mydb.get_server_info())
+
+
+***Working with Cursors***
+- cursors are objects used to execute SQL statements and fetch results from the db. Created using the cursor method of the connection object.
+- Once finished with the db close the connection to release resources
+
+example
+
+import mysql.connector
+
+mydb = mysql.connector.connect (
+        host = "localhost",
+        user = "username",
+        password = "password",
+        database = "database"
+)
+
+mycursor = mydb.cursor()
+# Execute SQL statements using the execute() method on the cursor
+
+# Close connection to the database
+mycursor.close()
+mydb.close()
+
+Executing SQL Queries (SELECT, INSERT, UPDATE, DELETE)
+
+***SELECT - Retrieve data from a table***
+
+mycursor.execute("SELECT * FROM table_name")
+myresult = mycursor.fetchall()
+for row in myresult:
+        print (row)
+
+
+***INSERT - Insert new data nto a table***
+
+sql = "INSERT INTO table_name (name, email) VALUES (%s, %s)"
+val = ("John", "john@gmail.com")
+mycursor.execute(sql, val)
+mydb.commit() # Commit the changes
+
+
+***UPDATE - Modify existing data in a table***
+
+sql = "UPDATE table_name SET name = %s WHERE id = %s"
+val = ("Jane", 1)
+mycursor.execute(sql, val)
+mydb.commit()
+
+
+DELETE - Remove data from a table***
+
+sql = "DELETE FROM table_name WHERE id = %s"
+val = (2,)
+mycursor.execute(sql, val)
+mydb.commit()
+
+***Complete code example***
+
+import mysql.connector
+
+mydb = mysql.connector.connect(
+        host = "localhost",
+        user = "username",
+        password = "password",
+        database = "database"
+)
+
+mycursor = mydb.cursor()
+
+#create a table `customers` (If it does not exist)
+mycursor.execute("""
+CREATE TABLE IF NOT EXISTS customers (
+        id INT AUTO_INCREAMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE
+)
+""")
+
+print("Table created successfully")
+
+#Insert customer data
+sql = "INSERT INTO customers (name, email) VALUES (%s, %s)"
+val = ("John Doe", "john@gmail.com")
+mycursor.execute(sql, val)
+mydb.commit()
+
+print(mycursor.rowcount, "record(s) inserted")
+
+val = ("Jane Smith", "janesmith@gmail.com")
+mycursor.execute(sql, val)
+mydb.commit()
+
+print(mycursor.rowcount "record(s) created")
+
+#read all customer data
+mycursor.execute("SELECT * FROM customers")
+myresult = mycursor.fetchall()
+
+print("Customers:")
+for row in myresult:
+        print(row)
+
+#Update a customers email
+sql = "UPDATE customers SET email = %s WHERE id = %s"
+val = ("updated.email@gmail.com", 1)
+mycursor.execute(sql, val)
+mydb.commit()
+
+print(mycursor.rowcount "record(s) updated")
+
+#Read updated customer data
+mycursor.execute("SELECT * FROM customers WHERE id = 1")
+myresult = mycursor.fetchone()
+
+print("Updated customer:")
+print(myresult)
+
+#Delete a customer
+sql = "DELETE FROM customers WHERE id = 2"
+mycursor.execute(sql)
+mydb.commit()
+
+print(mycursor.rowcount "record(s) deleted")
+
+#close connections
+mycursor.close()
+mydb.close()
+
+print("db connetion closed")
