@@ -74,3 +74,43 @@ commad:
 4. models.py - where you define your data models, represents the db table for your application. Models are defined as py classes that inherit from django.db.models.Model
 5. tests.py - used to write unit tests for app's models, views, and other components. Django provides a built in testing framework to help write and run tests
 6. views.py - contains the view functions that handle HTTP requests and return HTTP responses. Views are responsible for processing user input, interacting with models and rendering templates
+
+Models and their structure
+- Models are defined as python classes that inherit from the django.db.models.Model base class
+- Each attribute of the model represents a db field, and typr defined using field classes provided by Django (e.g. CharField, IntegerField, DateField, etc)
+- Most common fields:
+1. CharField - stores text-based data with a limited number of characters. Takes a max_legth parameter that specifies the maximum legnth of the string
+2. TextField - stores a large amount of text without any legth restriction
+3. FloatField - stores floating point numbers
+4. DecimalField - stores precise decimal values, often used for monetary values
+5. BooleanField - Stores boolean values
+6. DateField - store date values
+7. EmailField - subclass of CharField, stores email adresses. Provides basic validation for email formats
+
+Django ORM: Object-Relational Mapping
+- provides an abstraction layer that allows developers to interact with the db using py code instead of writing raw SQL queries.
+- Automatically handles tasks like creating db tables based on model definitions, performing db migrations, and executing crud operations.
+- Benefits of using Django ORM:
+1. Db abstraction - devs can work with py objects instead of writing SQL queries directly
+2. Portability - Supports multiple db engines(SQLite, PostgreSQL, MySQL, Oracle) with minimal code changes
+3. Db Schema - Automatic handling of db schema changes through migrations
+4. Powerful Queries - Supports powerful querying capabilities with Pythonic syntax
+
+Db Interaction with the Django ORM
+- The ORM provides a rich query API that allows devs to retrieve, filter, and manipulate data in the db using py code.
+- Suports complex quries, including joins, aggregations, and annotations, making it poerful for working with relational describing
+
+Configuring the Db
+- SQL lite, a lightweight file-based db is used by Django for dev environments
+- Configuring the db settings in Django involves modifying the DATABASES setting in the settings.py file
+eg:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mydatabase',
+        'USER': 'mydatabaseuser',
+        'PASSWORD': 'mypassword',
+        'HOST': 'localhost',
+        'PORT': '3306'
+    }
+}
